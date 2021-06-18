@@ -6,12 +6,14 @@ export const API_ENDPOINT = `https://openlibrary.org/search.json?`
 const AppContext = React.createContext()
 
 const AppProvider = ({ children }) => {
-  const [query, setQuery] = useState('')
-  const { isLoading, error, data: books } = useFetch(`q=${query}`)
-  console.log(books);
+    const [query, setQuery] = useState('')
+    const { isLoading, error, data } = useFetch(`q=${query}`)
+    const [page, setPage] = useState(0)
+    const [books, setBooks] = useState([])
+    // console.log(data);
 
   return (
-    <AppContext.Provider value={{ isLoading, error, books, query, setQuery }}>
+    <AppContext.Provider value={{ isLoading, error, data, query, setQuery, page, setPage, books, setBooks }}>
       {children}
     </AppContext.Provider>
   )

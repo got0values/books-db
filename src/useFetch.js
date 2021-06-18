@@ -1,6 +1,16 @@
 import { useState, useEffect } from 'react'
 const API_ENDPOINT = `https://openlibrary.org/search.json?`
 
+const paginate = (books) => {
+    const itemsPerPage = 10
+    const numberOfPages = Math.ceil(books.length / itemsPerPage)
+    const newBooks = Array.from({ length: numberOfPages }, (_, index) => {
+        const start = index * itemsPerPage
+        return books.slice(start, start + itemsPerPage)
+    })
+    return newBooks
+}
+
 const useFetch = (urlParams) => {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState({ show: false, msg: '' })
@@ -10,11 +20,9 @@ const useFetch = (urlParams) => {
     try {
       const response = await fetch(url)
       const data = await response.json()
-    //   console.log(data);
-    
       if (data) {
-        setData(data)
-
+        console.log(paginate(data.docs))
+        setData(paginate(data.docs))
         setError({ show: false, msg: '' })
       } else {
         setError({ show: true, msg: data.Error })
